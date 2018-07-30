@@ -8,6 +8,8 @@
 
 <body>
 Message: ${message}
+str: ${str}
+int: ${int}
 </body>
 
 </html>

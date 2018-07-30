@@ -8,12 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
- * 描述: hello World
+ * 描述:
  * 控制器
  *
  * @Author HeFeng
@@ -21,25 +19,16 @@ import java.util.Map;
  */
 
 @Controller
-public class HelloController {
+public class EventTestController {
 
-    @RequestMapping("/hello")
+    @Autowired
+    @Qualifier(value = "listenerService")
+    private ListenerTestService listenerTestService;
+
+    @RequestMapping("/event")
     @ResponseBody
     String index() {
-        return "hello world";
-    }
-
-    @GetMapping("/login")
-    public String hello(Map<String, Object> map) {
-        map.put("message", "hello");
-        return "/verify/login.ftl";
-    }
-
-    @RequestMapping("/hello2")
-    public String welcome(Map<String, Object> model) {
-        model.put("message", "hello2");
-        model.put("str","str_tmp");
-        model.put("int",12);
-        return "welcome";
+        String str = listenerTestService.publish("测试监听");
+        return str;
     }
 }
