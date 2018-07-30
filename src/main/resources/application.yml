@@ -7,6 +7,20 @@ spring:
     freemarker:
         template-loader-path: classpath:/templates/
         suffix: .ftl
+    datasource:
+      url: jdbc:mysql://localhost:3309/spring
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: create-drop
+      show-sql: true
+    redis:
+      host: 192.168.0.161
+      port: 10020
+      database: 4970
+      password: disk#Test1234
 
 Symphonys:
     StaticServePath: classpath:/templates/
