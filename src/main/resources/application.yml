@@ -12,10 +12,6 @@ spring:
       username: root
       password: 123456
       driver-class-name: com.mysql.jdbc.Driver
-    jpa:
-      hibernate:
-        ddl-auto: create-drop
-      show-sql: true
     redis:
       host: 192.168.0.161
       port: 10020
@@ -24,6 +20,14 @@ spring:
 
 Symphonys:
     StaticServePath: classpath:/templates/
+mybatis:
+  type-aliases-package: cn.he.zhao.spring.domain
+logging:
+  level:
+    cn.he.zhao.spring.mapper: debug
+
+
+#显示sql语句
 
 #    messages:
 #        basename: lang
