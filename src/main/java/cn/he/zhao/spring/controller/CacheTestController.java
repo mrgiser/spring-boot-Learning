@@ -29,7 +29,6 @@ public class CacheTestController {
     @ResponseBody
     UserEntity cache() {
 
-
         UserEntity user = new UserEntity("aa", "a123456", UserSexEnum.MAN);
         userMapper.insert(user);
         System.out.println(" id :"+ user.getId());

@@ -19,6 +19,7 @@ public interface UserMapper {
 		@Result(property = "nickName", column = "nick_name")
 	})
 	List<UserEntity> getAll();
+
 	
 	@Select("SELECT * FROM users WHERE id = #{id}")
 	@Results({
@@ -28,14 +29,17 @@ public interface UserMapper {
 	@Cacheable(value="users", key = "#p0")
 	UserEntity getOne(Long id);
 
+
 	@CachePut(value="users", key = "#p0.userName")
 	@Insert("INSERT INTO users(userName,passWord,user_sex) VALUES(#{userName}, #{passWord}, #{userSex})")
 	@SelectKey(statement="select LAST_INSERT_ID()", keyProperty="id", before=false, resultType=long.class)
 	void insert(UserEntity user);
 
+
 	@CachePut(value="users", key = "#p0.userName")
 	@Update("UPDATE users SET userName=#{userName},nick_name=#{nickName} WHERE id =#{id}")
 	void update(UserEntity user);
+
 
 	@CacheEvict(value="users", key = "#p0")
 	@Delete("DELETE FROM users WHERE id =#{id}")
