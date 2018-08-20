@@ -13,7 +13,7 @@ import java.io.OutputStream;
 import java.util.Map;
 
 /**
- * 描述: hello World
+ * 描述: image
  * 控制器
  *
  * @Author HeFeng
