@@ -1,15 +1,16 @@
 package cn.he.zhao.spring.controller;
 
-import cn.he.zhao.spring.service.ListenerTestService;
+import cn.he.zhao.spring.controller.vo.TestVo;
 import cn.he.zhao.spring.util.SpringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -22,6 +23,7 @@ import java.util.Map;
 
 @Controller
 public class HelloController {
+    public static final Logger LOGGER = LoggerFactory.getLogger(HelloController.class);
 
     @RequestMapping("/hello")
     @ResponseBody
@@ -36,7 +38,22 @@ public class HelloController {
     }
 
     @RequestMapping("/hello2")
-    public String welcome(final HttpServletRequest request, @RequestParam(value = "test",required = false)String test, Map<String, Object> model) {
+    public String welcome(final HttpServletRequest request,final HttpServletResponse response, @RequestParam(value = "test",required = false)String test, Map<String, Object> model) {
+
+        HttpSession tmp_session = request.getSession(false);
+        if (tmp_session != null){
+            LOGGER.info("session id" + tmp_session.getId());
+            LOGGER.info(tmp_session.getAttribute("user").toString());
+        }
+
+        LOGGER.info(request.getHeader("user"));
+
+        HttpSession session = request.getSession(true);
+        session.setAttribute("user","user_id");
+
+        Cookie cookie = new Cookie("majun", "xiaoya");
+        cookie.setMaxAge(10000); //设置cookie的过期时间是10s
+        response.addCookie(cookie);
 
         if(test != null && test.equals("1")){
             return "redirect:/hello";
@@ -60,7 +77,27 @@ public class HelloController {
     }
 
     @RequestMapping(value = "/welcome", method = RequestMethod.POST)
-    public void post(final HttpServletRequest request,  Map<String, Object> model) {
+    public Map post(final HttpServletRequest request, final HttpServletResponse response, Map<String, Object> model) {
+
+        HttpSession tmp_session = request.getSession(false);
+        if (tmp_session != null){
+            LOGGER.info("session id" + tmp_session.getId());
+            LOGGER.info(tmp_session.getAttribute("user").toString());
+        }
+        Cookie[] cookies = request.getCookies();
+        for(Cookie cookie : cookies){
+            LOGGER.info("cookie name "+ cookie.getName());
+            LOGGER.info("cookie value "+cookie.getValue());
+        }
+
+
+        HttpSession session = request.getSession(true);
+        session.setAttribute("user","user_id");
+
+        Cookie cookie = new Cookie("testCookie", "jhkgsdgflkytigklhgilgiugbughiugiu");
+        cookie.setMaxAge(10000); //设置cookie的过期时间是10s
+        response.addCookie(cookie);
+
 
 
         model.put("message", "hello2");
@@ -71,6 +108,7 @@ public class HelloController {
         System.out.println(SpringUtil.getServerPath(request));
         System.out.println(SpringUtil.getServerHost(request));
 
+        return model;
     }
 
     @RequestMapping("/sendError")
